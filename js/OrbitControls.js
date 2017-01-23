@@ -5,6 +5,24 @@
  * @author WestLangley / http://github.com/WestLangley
  */
 
+function IsPC() {
+    var userAgentInfo = navigator.userAgent;
+    var Agents = ["Android", "iPhone",
+                "SymbianOS", "Windows Phone",
+                "iPad", "iPod"];
+    var flag = true;
+    for (var v = 0; v < Agents.length; v++) {
+        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+            flag = false;
+            break;
+        }
+    }
+    return flag;
+}
+
+var global_event_mousedown = IsPC() ? 'mousedown' : 'touchstart';
+var global_event_mouseup = IsPC() ? 'mouseup' : 'touchend';
+var global_event_mousemove = IsPC() ? 'mousemove' : 'touchmove';
 THREE.OrbitControls = function ( object, domElement ) {
 
 	this.object = object;
@@ -252,8 +270,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		}
 
-		document.addEventListener( 'mousemove', onMouseMove, false );
-		document.addEventListener( 'mouseup', onMouseUp, false );
+		document.addEventListener( global_event_mousemove, onMouseMove, false );
+		document.addEventListener( global_event_mouseup, onMouseUp, false );
 
 	}
 
@@ -308,8 +326,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 		if ( scope.enabled === false ) return;
 		if ( scope.userRotate === false ) return;
 
-		document.removeEventListener( 'mousemove', onMouseMove, false );
-		document.removeEventListener( 'mouseup', onMouseUp, false );
+		document.removeEventListener( global_event_mousemove, onMouseMove, false );
+		document.removeEventListener( global_event_mouseup, onMouseUp, false );
 
 		state = STATE.NONE;
 
@@ -392,7 +410,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	}
 
 	this.domElement.addEventListener( 'contextmenu', function ( event ) { event.preventDefault(); }, false );
-	this.domElement.addEventListener( 'mousedown', onMouseDown, false );
+	this.domElement.addEventListener( global_event_mousedown, onMouseDown, false );
 	this.domElement.addEventListener( 'mousewheel', onMouseWheel, false );
 	this.domElement.addEventListener( 'DOMMouseScroll', onMouseWheel, false ); // firefox
 	window.addEventListener( 'keydown', onKeyDown, false );

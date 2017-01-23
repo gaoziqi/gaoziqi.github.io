@@ -63,13 +63,13 @@ function init() {
 
 	raycaster = new THREE.Raycaster();
 	mouse = new THREE.Vector2();
-	document.addEventListener('mousemove', function (event) {
+	document.addEventListener(global_event_mousemove, function (event) {
 		event.preventDefault();
 		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 	}, false);
 
-	document.addEventListener('click', _mouse_click, false);
+	document.addEventListener(global_event_mouseup, _mouse_click, false);
 }
 const block_size = 5;
 const block_interval = 2 + block_size;
@@ -179,7 +179,7 @@ function _render() {
 
 function __qiang_move(postion) {
 	result = postion.clone();
-	result.z = block_size/2.0;
+	result.z = block_size / 2.0;
 	if (Math.abs(result.x) < block_interval * 4 && Math.abs(result.y) < block_interval * 4) {
 		result.x = (Math.floor(result.x / block_interval) + 0.5) * block_interval;
 		result.y = (Math.floor(result.y / block_interval) + 0.5) * block_interval;
@@ -225,32 +225,27 @@ function _is_qiang(a) {
 }
 
 function _is_qiang_kong(obj) {
-	if(obj.userData['hs']==global_qiangh)
-	{
-		for (var i = 0; i < global_qianglist.length-1; i++) {
-			if(Math.abs(Math.round(global_qianglist[i].position.y - obj.position.y)) < block_interval)
-			{
+	if (obj.userData['hs'] == global_qiangh) {
+		for (var i = 0; i < global_qianglist.length - 1; i++) {
+			if (Math.abs(Math.round(global_qianglist[i].position.y - obj.position.y)) < block_interval) {
 				if (Math.abs(Math.round(global_qianglist[i].position.x - obj.position.x)) < block_interval
-				||(Math.abs(Math.round(global_qianglist[i].position.x - obj.position.x)) < 2*block_interval
-				&&obj.userData['hs']==global_qianglist[i].userData['hs']))
+					|| (Math.abs(Math.round(global_qianglist[i].position.x - obj.position.x)) < 2 * block_interval
+						&& obj.userData['hs'] == global_qianglist[i].userData['hs']))
 					return false;
 			}
 		}
 	}
-	else if(obj.userData['hs']==global_qiangs)
-	{
-		for (var i = 0; i < global_qianglist.length-1; i++) {
-			if(Math.abs(Math.round(global_qianglist[i].position.x - obj.position.x)) < block_interval)
-			{
+	else if (obj.userData['hs'] == global_qiangs) {
+		for (var i = 0; i < global_qianglist.length - 1; i++) {
+			if (Math.abs(Math.round(global_qianglist[i].position.x - obj.position.x)) < block_interval) {
 				if (Math.abs(Math.round(global_qianglist[i].position.y - obj.position.y)) < block_interval
-				||(Math.abs(Math.round(global_qianglist[i].position.y - obj.position.y)) < 2*block_interval
-				&&obj.userData['hs']==global_qianglist[i].userData['hs']))
+					|| (Math.abs(Math.round(global_qianglist[i].position.y - obj.position.y)) < 2 * block_interval
+						&& obj.userData['hs'] == global_qianglist[i].userData['hs']))
 					return false;
 			}
 		}
 	}
-	else
-	{
+	else {
 		console.error('userData[\'hs\'] unknow');
 	}
 	return true;
@@ -269,7 +264,6 @@ var mouse_choose = null;
 var bool_qiang = false;
 
 function _mouse_click(event) {
-	event.preventDefault();
 	switch (mouse_state) {
 		case state_normal:
 			if (INTERSECTED != null) {
@@ -283,7 +277,7 @@ function _mouse_click(event) {
 					obj.material.transparent = true;
 					obj.name = scene.children.length;
 					mouse_choose = obj.name;
-					obj.userData['hs']=INTERSECTED.name;
+					obj.userData['hs'] = INTERSECTED.name;
 					scene.add(obj);
 					global_qianglist.push(obj);
 					bool_qiang = false;
@@ -296,26 +290,28 @@ function _mouse_click(event) {
 			}
 			break;
 		case state_move:
-			if (INTERSECTED != null) {
-				if (_is_qipan_kong(INTERSECTED.name)) {
-					_set_qizi(mouse_choose, INTERSECTED.name);
-					scene.children[mouse_choose].material.transparent = false;
-					INTERSECTED.material.transparent = false;
-					mouse_choose = null;
-					mouse_state = state_normal;
-				}
+			if (INTERSECTED != null && _is_qipan_kong(INTERSECTED.name)) {
+				_set_qizi(mouse_choose, INTERSECTED.name);
+				scene.children[mouse_choose].material.transparent = false;
+				INTERSECTED.material.transparent = false;
+				mouse_choose = null;
+				mouse_state = state_normal;
 			}
-			break;
-		case state_qiang:
-			if (bool_qiang&&_is_qiang_kong(scene.children[mouse_choose])) {
+			else {
 				scene.children[mouse_choose].material.transparent = false;
 				mouse_choose = null;
 				mouse_state = state_normal;
 			}
-			else{
+			break;
+		case state_qiang:
+			if (bool_qiang && _is_qiang_kong(scene.children[mouse_choose])) {
+				scene.children[mouse_choose].material.transparent = false;
+				mouse_choose = null;
+				mouse_state = state_normal;
+			}
+			else {
 				list_rm(global_qianglist, scene.children[mouse_choose]);
 				list_rm(scene.children, scene.children[mouse_choose]);
-				mouse_choose = null;
 				mouse_state = state_normal;
 			}
 			break;
