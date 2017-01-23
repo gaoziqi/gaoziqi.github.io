@@ -2,6 +2,7 @@ var scene = null;//主场景
 var camera = null;//主摄像头
 var renderer = null;//主渲染
 var controls = null;//主摄像头控制
+var Devices = null;//主摄像头陀螺仪控制
 var clock = new THREE.Clock();//主时钟
 var raycaster = null;//主拾取射线
 var INTERSECTED = null;//主拾取对象
@@ -12,6 +13,18 @@ var mouse = null;//主鼠标
 					显示篇
 
 *****************************************************/
+
+function IsPC() {
+	var userAgentInfo = navigator.userAgent;
+	var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");
+	var flag = true;
+	for (var v = 0; v < Agents.length; v++) {
+		if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }
+	}
+	return flag;
+}
+
+var global_is_pc = IsPC();
 
 function range(a, b) {
 	var result = [];
@@ -48,7 +61,12 @@ function init() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
 
-	controls = new THREE.OrbitControls(camera, renderer.domElement);
+	if(global_is_pc)
+		controls = new THREE.OrbitControls(camera);
+	else{
+		Devices = new THREE.DeviceOrientationControls(camera);
+		Devices.connect();
+	}
 
 	//var light = new THREE.PointLight(0xffffff);
 	//light.position.set(0, 250, 0);
@@ -63,13 +81,20 @@ function init() {
 
 	raycaster = new THREE.Raycaster();
 	mouse = new THREE.Vector2();
-	document.addEventListener(global_event_mousemove, function (event) {
+	document.addEventListener('mousemove', function (event) {
 		event.preventDefault();
 		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+		raycaster.setFromCamera(mouse, camera);
 	}, false);
-
-	document.addEventListener(global_event_mouseup, _mouse_click, false);
+	document.addEventListener('touchdown', function (event) {
+		event.preventDefault();
+		mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+		mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
+		raycaster.setFromCamera(mouse, camera);
+	}, false);
+	document.addEventListener('click', _mouse_click, false);
+	document.addEventListener('touchup', _mouse_click, false);
 }
 const block_size = 5;
 const block_interval = 2 + block_size;
@@ -126,12 +151,11 @@ function animate() {
 function _update() {
 	// delta = change in time since last call (in seconds)
 	var delta = clock.getDelta();
-	controls.update();
+	global_is_pc?controls.update():Devices.update();
 }
 
 function _render() {
 	renderer.render(scene, camera);
-	raycaster.setFromCamera(mouse, camera);
 	switch (mouse_state) {
 		case state_normal:
 		case state_move:
@@ -264,6 +288,7 @@ var mouse_choose = null;
 var bool_qiang = false;
 
 function _mouse_click(event) {
+	event.preventDefault();
 	switch (mouse_state) {
 		case state_normal:
 			if (INTERSECTED != null) {
