@@ -312,6 +312,12 @@ function _mouse_click(event) {
 				mouse_choose = null;
 				mouse_state = state_normal;
 			}
+			else{
+				list_rm(global_qianglist, scene.children[mouse_choose]);
+				list_rm(scene.children, scene.children[mouse_choose]);
+				mouse_choose = null;
+				mouse_state = state_normal;
+			}
 			break;
 		case state_delete:
 			if (INTERSECTED != null) {
