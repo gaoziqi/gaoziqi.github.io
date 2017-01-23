@@ -179,7 +179,7 @@ function _render() {
 
 function __qiang_move(postion) {
 	result = postion.clone();
-	result.z = block_size;
+	result.z = block_size/2.0;
 	if (Math.abs(result.x) < block_interval * 4 && Math.abs(result.y) < block_interval * 4) {
 		result.x = (Math.floor(result.x / block_interval) + 0.5) * block_interval;
 		result.y = (Math.floor(result.y / block_interval) + 0.5) * block_interval;
