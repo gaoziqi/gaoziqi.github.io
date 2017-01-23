@@ -55,15 +55,17 @@ function init() {
 	scene = new THREE.Scene();
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 	camera.position.set(0, 0, 100);
-	camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
 
-	if(global_is_pc)
+	if (global_is_pc) {
+		camera.lookAt(new THREE.Vector3(0, 0, 0));
 		controls = new THREE.OrbitControls(camera);
-	else{
+	}
+	else {
+		camera.lookAt(new THREE.Vector3(0, -100, 100));
 		Devices = new THREE.DeviceOrientationControls(camera);
 		Devices.connect();
 	}
@@ -87,13 +89,21 @@ function init() {
 		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 		raycaster.setFromCamera(mouse, camera);
 	}, false);
-	document.addEventListener('touchdown', function (event) {
+	document.addEventListener('touchmove', function (event) {
 		event.preventDefault();
 		mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
 		mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
 		raycaster.setFromCamera(mouse, camera);
 	}, false);
 	document.addEventListener('click', _mouse_click, false);
+	document.addEventListener('touchdown', function (event) {
+		event.preventDefault();
+		mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+		mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
+		raycaster.setFromCamera(mouse, camera);
+		__render_event();
+		_mouse_click(event);
+	}, false);
 	document.addEventListener('touchup', _mouse_click, false);
 }
 const block_size = 5;
@@ -151,11 +161,15 @@ function animate() {
 function _update() {
 	// delta = change in time since last call (in seconds)
 	var delta = clock.getDelta();
-	global_is_pc?controls.update():Devices.update();
+	global_is_pc ? controls.update() : Devices.update();
 }
 
 function _render() {
 	renderer.render(scene, camera);
+	__render_event();
+}
+
+function __render_event() {
 	switch (mouse_state) {
 		case state_normal:
 		case state_move:
@@ -288,7 +302,6 @@ var mouse_choose = null;
 var bool_qiang = false;
 
 function _mouse_click(event) {
-	event.preventDefault();
 	switch (mouse_state) {
 		case state_normal:
 			if (INTERSECTED != null) {
