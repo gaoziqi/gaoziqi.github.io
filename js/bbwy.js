@@ -65,7 +65,7 @@ function init() {
 		controls = new THREE.OrbitControls(camera);
 	}
 	else {
-		camera.lookAt(new THREE.Vector3(0, -100, 100));
+		camera.lookAt(new THREE.Vector3(0, 0, 0));
 		Devices = new THREE.DeviceOrientationControls(camera);
 		Devices.connect();
 	}
@@ -96,7 +96,7 @@ function init() {
 		raycaster.setFromCamera(mouse, camera);
 	}, false);
 	document.addEventListener('click', _mouse_click, false);
-	document.addEventListener('touchdown', function (event) {
+	document.addEventListener('touchstart', function (event) {
 		event.preventDefault();
 		mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
 		mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
@@ -104,7 +104,7 @@ function init() {
 		__render_event();
 		_mouse_click(event);
 	}, false);
-	document.addEventListener('touchup', _mouse_click, false);
+	document.addEventListener('touchend', _mouse_click, false);
 }
 const block_size = 5;
 const block_interval = 2 + block_size;
