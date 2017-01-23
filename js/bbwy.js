@@ -65,7 +65,7 @@ function init() {
 		controls = new THREE.OrbitControls(camera);
 	}
 	else {
-		camera.lookAt(new THREE.Vector3(0, 0, 100));
+		camera.lookAt(new THREE.Vector3(0, -100, 100));
 		Devices = new THREE.DeviceOrientationControls(camera);
 		Devices.connect();
 	}
