@@ -60,16 +60,6 @@ function init() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
 
-	if (global_is_pc) {
-		camera.lookAt(new THREE.Vector3(0, 0, 0));
-		controls = new THREE.OrbitControls(camera);
-	}
-	else {
-		camera.lookAt(new THREE.Vector3(0, 0, 0));
-		Devices = new THREE.DeviceOrientationControls(camera);
-		Devices.connect();
-	}
-
 	//var light = new THREE.PointLight(0xffffff);
 	//light.position.set(0, 250, 0);
 	var directionalLight = new THREE.DirectionalLight(0xffffff);
@@ -83,28 +73,39 @@ function init() {
 
 	raycaster = new THREE.Raycaster();
 	mouse = new THREE.Vector2();
-	document.addEventListener('mousemove', function (event) {
-		event.preventDefault();
-		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-		raycaster.setFromCamera(mouse, camera);
-	}, false);
-	document.addEventListener('touchmove', function (event) {
-		event.preventDefault();
-		mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
-		mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
-		raycaster.setFromCamera(mouse, camera);
-	}, false);
-	document.addEventListener('click', _mouse_click, false);
-	document.addEventListener('touchstart', function (event) {
-		event.preventDefault();
-		mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
-		mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
-		raycaster.setFromCamera(mouse, camera);
-		__render_event();
-		_mouse_click(event);
-	}, false);
-	document.addEventListener('touchend', _mouse_click, false);
+
+
+	if (global_is_pc) {
+		camera.lookAt(new THREE.Vector3(0, 0, 0));
+		controls = new THREE.OrbitControls(camera);
+		document.addEventListener('mousemove', function (event) {
+			event.preventDefault();
+			mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+			mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+			raycaster.setFromCamera(mouse, camera);
+			document.addEventListener('click', _mouse_click, false);
+		}, false);
+	}
+	else {
+		camera.lookAt(new THREE.Vector3(0, 0, 0));
+		Devices = new THREE.DeviceOrientationControls(camera);
+		Devices.connect();
+		document.addEventListener('touchmove', function (event) {
+			event.preventDefault();
+			mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+			mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
+			raycaster.setFromCamera(mouse, camera);
+		}, false);
+		document.addEventListener('touchstart', function (event) {
+			event.preventDefault();
+			mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+			mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
+			raycaster.setFromCamera(mouse, camera);
+			__render_event();
+			_mouse_click(event);
+		}, false);
+		document.addEventListener('touchend', _mouse_click, false);
+	}
 }
 const block_size = 5;
 const block_interval = 2 + block_size;
