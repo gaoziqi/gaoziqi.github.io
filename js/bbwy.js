@@ -162,7 +162,7 @@ function animate() {
 function _update() {
 	// delta = change in time since last call (in seconds)
 	var delta = clock.getDelta();
-	global_is_pc ? controls.update() : null；//Devices.update();
+	global_is_pc ? controls.update() : aa=null；//Devices.update();
 }
 
 function _render() {
