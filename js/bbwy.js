@@ -88,8 +88,8 @@ function init() {
 	}
 	else {
 		camera.lookAt(new THREE.Vector3(0, 0, 0));
-		//Devices = new THREE.DeviceOrientationControls(camera);
-		//Devices.connect();
+		Devices = new THREE.DeviceOrientationControls(camera);
+		Devices.connect();
 		document.addEventListener('touchmove', function (event) {
 			event.preventDefault();
 			mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
