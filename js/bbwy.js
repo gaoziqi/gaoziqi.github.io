@@ -14,6 +14,8 @@ var mouse = null;//主鼠标
 
 *****************************************************/
 
+var global_VR = true;
+
 function IsPC() {
 	var userAgentInfo = navigator.userAgent;
 	var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");
@@ -88,8 +90,12 @@ function init() {
 	}
 	else {
 		camera.lookAt(new THREE.Vector3(0, 0, 0));
-		Devices = new THREE.DeviceOrientationControls(camera);
-		Devices.connect();
+		if (global_VR) {
+			Devices = new THREE.DeviceOrientationControls(camera);
+			Devices.connect();
+			Devices.update();
+		}
+
 		document.addEventListener('touchmove', function (event) {
 			event.preventDefault();
 			mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
@@ -162,8 +168,12 @@ function animate() {
 function _update() {
 	// delta = change in time since last call (in seconds)
 	var delta = clock.getDelta();
-	global_is_pc ? controls.update() : Devices.update();
-        //if(global_is_pc)cpntrols.update();
+	if (global_is_pc) {
+		controls.update();
+	} else if (global_VR) {
+		Devices.update();
+	}
+
 }
 
 function _render() {
