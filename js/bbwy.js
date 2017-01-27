@@ -14,7 +14,7 @@ var mouse = null;//主鼠标
 
 *****************************************************/
 
-var global_VR = false;
+var global_VR = true;
 
 function IsPC() {
 	var userAgentInfo = navigator.userAgent;
@@ -89,7 +89,7 @@ function init() {
 		}, false);
 	}
 	else {
-		camera.lookAt(new THREE.Vector3(0, 0, 0));
+		camera.lookAt(new THREE.Vector3(0, -100, 100));
 		if (global_VR) {
 			Devices = new THREE.DeviceOrientationControls(camera);
 			Devices.connect();
