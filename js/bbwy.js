@@ -89,7 +89,7 @@ function init() {
 		}, false);
 	}
 	else {
-		camera.lookAt(new THREE.Vector3(0, -100, 100));
+		camera.lookAt(new THREE.Vector3(0, 0, 0));
 		if (global_VR) {
 			Devices = new THREE.DeviceOrientationControls(camera);
 			Devices.connect();
