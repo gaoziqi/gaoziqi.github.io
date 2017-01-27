@@ -14,7 +14,7 @@ var mouse = null;//主鼠标
 
 *****************************************************/
 
-var global_VR = true;
+var global_VR = false;
 
 function IsPC() {
 	var userAgentInfo = navigator.userAgent;
