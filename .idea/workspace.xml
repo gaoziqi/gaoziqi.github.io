@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="041302b2-de26-4f8b-826b-790d2d2f4a4e" name="默认的" comment="拒绝提交:默认的">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/gaoziqi.xml" />
+    <list default="true" id="041302b2-de26-4f8b-826b-790d2d2f4a4e" name="默认的" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/OrbitControls.js" afterPath="$PROJECT_DIR$/js/OrbitControls.js" />
     </list>
     <ignored path="gaoziqi.github.io.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -214,11 +212,17 @@
       <option name="project" value="LOCAL" />
       <updated>1508893479578</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="拒绝提交:默认的">
+      <created>1508893564239</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1508893564239</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
+    <frame x="-8" y="-8" width="1456" height="876" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14305556" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
